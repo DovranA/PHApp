@@ -1,0 +1,23 @@
+const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const authRouter = require("./routers/auth.js");
+const doctorRouter = require("./routers/doctor.js");
+const pasientRouter = require("./routers/pasient.js");
+const expressApp = express();
+const http = require("http");
+const path = require("path");
+expressApp.use(express.json());
+expressApp.use(cors());
+expressApp.use(cookieParser());
+expressApp.use(morgan("tiny"));
+expressApp.use(express.static(path.join(__dirname, "..", "src", "dist")));
+expressApp.use("/api/auth", authRouter);
+expressApp.use("/api/doctor", doctorRouter);
+expressApp.use("/api/pasient", pasientRouter);
+exApp = http.createServer(expressApp);
+expressApp.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "src", "dist", "index.html"));
+});
+module.exports = { exApp };
